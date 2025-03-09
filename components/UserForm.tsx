@@ -2,12 +2,10 @@
 import { BiSolidSend } from "react-icons/bi";
 import InputText from "@/components/form/InputText";
 import CustomSelect from "@/components/form/CustomSelect";
-import { AI_SOURCES, FITNESS_LEVELS, GENDERS, GOALS } from "@/constants";
+import { FITNESS_LEVELS, GENDERS, GOALS } from "@/constants";
 import toast from "react-hot-toast";
 import { geminiApiGenerateMsg } from "@/ai/geminiAiServices";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { IoNavigate } from "react-icons/io5";
 import { useUser } from "../context/UserContext";
 export default function UserForm({ setData }: any) {
   const { user, setUser, logout, loading, showLoader, hideLoader } = useUser();
@@ -17,7 +15,6 @@ export default function UserForm({ setData }: any) {
   const [gender, setGender] = useState("male");
   const [fitnessLevel, setFitnessLevel] = useState("beginner");
   const [goal, setGoal] = useState("muscle-gain");
-  const router = useRouter(); // Initialize useRouter
   const handleSubmit = async (event: any) => {
     event.preventDefault(); // Prevent form submission and page reload
     showLoader();

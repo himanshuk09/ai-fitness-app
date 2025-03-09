@@ -2,26 +2,13 @@
 import React, { useRef } from "react";
 import WeeklyPlan from "@/components/WeeklyPlan";
 import { BiSolidDownload } from "react-icons/bi";
+import dynamic from "next/dynamic";
+// Dynamically import browser-only libraries
+const html2canvas = dynamic(() => import("html2canvas-pro"), { ssr: false });
 
-import html2canvas from "html2canvas-pro";
-
-import jsPDF from "jspdf";
-import html2pdf from "html2pdf.js";
+const jsPDF = dynamic(() => import("jspdf"), { ssr: false });
 const TableToPDF = ({ data }) => {
   const pdfContainerRef = useRef(null);
-  const handleDownload = async () => {
-    // const html2pdf = await import("html2pdf.js");
-    const pdfOptions = {
-      margin: [10, 10, 10, 10], // Set margins [top, right, bottom, left]
-    };
-
-    html2pdf
-      .default()
-      .set(pdfOptions)
-      .from(pdfContainerRef.current)
-      .save("table.pdf");
-    //ref={pdfContainerRef}
-  };
 
   const generatePDFfromUI = async (elementId, filename = "document.pdf") => {
     const element = document.getElementById(elementId);
