@@ -101,7 +101,7 @@ export default function LoginPage() {
             <Button
               type="submit"
               variant="outline"
-              className="px-8 w-full text-lg font-semibold text-white/80 bg-black/60 hover:bg-white/70 hover:text-black/90"
+              className="px-8 w-full cursor-pointer text-lg font-semibold text-white/80 bg-black/60 hover:bg-white/70 hover:text-black/90"
             >
               Login
             </Button>
@@ -109,7 +109,7 @@ export default function LoginPage() {
               Don&apos;t have an account?{" "}
               <Link
                 href="/register"
-                className="text-primary hover:underline"
+                className="text-primary hover:underline cursor-pointer"
                 onClick={() => showLoader()}
               >
                 Register

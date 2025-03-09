@@ -217,12 +217,14 @@ export default function Home() {
                     type="submit"
                     onClick={handleGenerate}
                     disabled={loading}
-                    className="rounded-md bg-black/60 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/90 disabled:bg-black/15  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="rounded-md cursor-pointer bg-black/60 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/90 disabled:bg-black/15  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     {loading ? (
                       "Generating..."
                     ) : (
-                      <div className={"flex justify-center items-center gap-2"}>
+                      <div
+                        className={"flex justify-center  items-center gap-2"}
+                      >
                         Generate <BiSolidSend />
                       </div>
                     )}

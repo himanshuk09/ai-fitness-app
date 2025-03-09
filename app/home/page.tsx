@@ -5,92 +5,13 @@ import { account, ID } from "@/app/api/appwriter";
 import Image from "next/image";
 import { useUser } from "@/context/UserContext";
 import { FitnessGrid } from "@/components/FitnessGrid";
+import { SECTIONS } from "@/constants";
 
 const HomeScreen = () => {
   const { user, setUser, loading, logout } = useUser();
 
   // Initialize useRouter
-  const sections = [
-    {
-      title: "Workouts",
-      items: [
-        {
-          name: "Yoga",
-          img: "/images/yoga.jpeg",
-        },
-        {
-          name: "Weightlifting",
-          img: "/images/weightlifting.jpg",
-        },
-        {
-          name: "Cardio",
-          img: "/images/cardio.jpg",
-        },
-        {
-          name: "HIIT",
-          img: "/images/hiit.jpeg",
-        },
-        {
-          name: "CrossFit",
-          img: "/images/crossFit.jpg",
-        },
-        {
-          name: "Pilates",
-          img: "/images/pilates.jpg",
-        },
-        {
-          name: "Stretching",
-          img: "/images/stretching.jpg",
-        },
-        {
-          name: "Running",
-          img: "/images/running.jpg",
-        },
-      ],
-    },
-    {
-      title: "Exercises",
-      items: [
-        {
-          name: "Push-Ups",
-          img: "/images/pushups.jpg",
-        },
-        {
-          name: "Squats",
-          img: "/images/squats.jpg",
-        },
-        {
-          name: "Plank",
-          img: "/images/plank.jpg",
-        },
-        {
-          name: "Deadlifts",
-          img: "/images/deadlifts.jpg",
-        },
-      ],
-    },
-    {
-      title: "Diets",
-      items: [
-        {
-          name: "Keto Diet",
-          img: "/images/keto.jpg",
-        },
-        {
-          name: "High Protein",
-          img: "/images/protein.jpg",
-        },
-        {
-          name: "Vegan Diet",
-          img: "/images/vegan.jpg",
-        },
-        {
-          name: "Balanced Diet",
-          img: "/images/balanced.jpg",
-        },
-      ],
-    },
-  ];
+
   // // Fetch user data
   const fetchUser = async () => {
     try {
@@ -125,7 +46,7 @@ const HomeScreen = () => {
         </div>
       </section>
 
-      {sections.map((section: any) => (
+      {SECTIONS.map((section: any) => (
         <div key={section.title} className="mb-12">
           <h2 className="text-3xl font-semibold text-center mb-6">
             {section.title}

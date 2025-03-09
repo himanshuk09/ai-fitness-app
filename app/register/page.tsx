@@ -146,7 +146,7 @@ export default function RegisterPage() {
             <Button
               type="submit"
               variant="outline"
-              className="px-8 w-full text-lg font-semibold text-white/80 bg-black/60 hover:bg-black/90 hover:text-white/90"
+              className="px-8 w-full cursor-pointer text-lg font-semibold text-white/80 bg-black/60 hover:bg-black/90 hover:text-white/90"
             >
               Register
             </Button>

@@ -1,6 +1,6 @@
 "use client";
 const CustomTableHeader = ({ colName }: any) => (
-  <th className="font-medium p-4 text-left">{colName}</th>
+  <th className="font-medium p-4  text-black text-left">{colName}</th>
 );
 
 const CustomTableData = ({ data, type }: any) => (
@@ -13,7 +13,7 @@ const CustomTable = ({ exercises }: any) => {
   return (
     <table className="border-collapse table-fixed w-full text-sm mb-3">
       <thead>
-        <tr className={"border-b bg-white/80"}>
+        <tr className={"border-b bg-white/10"}>
           <CustomTableHeader colName={"Exercise"} />
           <CustomTableHeader colName={"Sets"} />
           <CustomTableHeader colName={"Reps"} />
@@ -21,7 +21,7 @@ const CustomTable = ({ exercises }: any) => {
           <CustomTableHeader colName={"Rest Between Sets"} />
         </tr>
       </thead>
-      <tbody className="bg-white/80">
+      <tbody className="bg-white/50">
         {exercises.map(
           ({ exercise, sets, reps, weight, rest }: any, index: any) => (
             <tr key={index}>

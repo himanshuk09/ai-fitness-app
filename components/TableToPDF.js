@@ -47,7 +47,7 @@ const TableToPDF = ({ data }) => {
                 generatePDFfromUI("content");
               }}
               type="button"
-              className="rounded-md bg-secondary-main px-3 py-2 text-sm font-semibold text-white shadow-sm hover:text-black hover:bg-white disabled:bg-secondary-light  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 outline-1 outline-white"
+              className="rounded-md cursor-pointer bg-secondary-main px-3 py-2 text-sm font-semibold text-white shadow-sm hover:text-black hover:bg-white disabled:bg-secondary-light  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 outline-1 outline-white"
 
               // className="rounded-md bg-secondary-main px-3 py-2 text-sm font-semibold text-white shadow-sm hover:text-black hover:bg-white disabled:bg-secondary-light  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
