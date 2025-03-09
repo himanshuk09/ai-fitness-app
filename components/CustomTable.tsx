@@ -1,3 +1,4 @@
+"use client";
 const CustomTableHeader = ({ colName }: any) => (
   <th className="font-medium p-4 text-left">{colName}</th>
 );

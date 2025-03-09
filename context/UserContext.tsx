@@ -51,7 +51,7 @@ export const UserProvider = ({ children }: any) => {
     <UserContext.Provider
       value={{ user, setUser, loading, showLoader, hideLoader, logout }}
     >
-      {loading && ( // Show loader only when loading is true
+      {/* {loading && ( // Show loader only when loading is true
         <div className="fixed inset-0 flex items-center justify-center bg-black/30 bg-opacity-50 z-50">
           <div className="cursor-pointer bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent font-bold text-lg ">
             <div className="flex justify-center items-center h-screen">
@@ -61,8 +61,28 @@ export const UserProvider = ({ children }: any) => {
             </div>
           </div>
         </div>
+      )} */}
+      {/* {loading && (
+       
+        <div className="fixed inset-0 flex items-center justify-center bg-black/30 bg-opacity-50 z-50">
+          <div className="flex-col gap-4 w-full flex items-center justify-center">
+            <div className="w-20 h-20 border-4 border-transparent  text-black text-4xl animate-spin flex items-center justify-center border-t-black rounded-full">
+              <div className="w-16 h-16 border-4 border-transparent text-white  text-2xl animate-spin flex items-center justify-center border-t-white rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      )} */}
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 bg-opacity-50 z-50">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-gray mx-auto"></div>
+            <h2 className="text-zinc-900 dark:text-white mt-4">Loading...</h2>
+            <p className="text-zinc-600 dark:text-zinc-400">
+              Your adventure is about to begin
+            </p>
+          </div>
+        </div>
       )}
-
       {children}
     </UserContext.Provider>
   );

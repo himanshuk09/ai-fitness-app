@@ -2,7 +2,7 @@
 
 import { CardFooter } from "@/components/ui/card";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,6 +38,11 @@ export default function LoginPage() {
       hideLoader();
     }
   };
+  useEffect(() => {
+    setTimeout(() => {
+      hideLoader();
+    }, 1000);
+  }, []);
   return (
     <div
       className="flex min-h-screen items-center justify-center p-4"
@@ -102,7 +107,11 @@ export default function LoginPage() {
             </Button>
             <div className="text-center text-sm text-white">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="text-primary hover:underline">
+              <Link
+                href="/register"
+                className="text-primary hover:underline"
+                onClick={() => showLoader()}
+              >
                 Register
               </Link>
             </div>

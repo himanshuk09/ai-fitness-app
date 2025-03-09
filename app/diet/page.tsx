@@ -136,13 +136,17 @@ export default function Home() {
       hideLoader();
     }
   };
-
+  useEffect(() => {
+    setTimeout(() => {
+      hideLoader();
+    }, 1000);
+  }, []);
   return (
     <main className="flex flex-col min-h-screen bg-black">
       <div
         className={"w-full flex-grow"}
         style={{
-          backgroundImage: "url('/images/login-screen.jpg')",
+          backgroundImage: "url('/images/diet.avif')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,6 +52,11 @@ export default function RegisterPage() {
       hideLoader();
     }
   };
+  useEffect(() => {
+    setTimeout(() => {
+      hideLoader();
+    }, 1000);
+  }, []);
   return (
     <div
       className="flex min-h-screen items-center justify-center p-4"
@@ -147,7 +152,11 @@ export default function RegisterPage() {
             </Button>
             <div className="text-center text-sm text-white">
               Already have an account?{" "}
-              <Link href="/login" className="text-primary hover:underline">
+              <Link
+                href="/login"
+                className="text-primary hover:underline"
+                onClick={() => showLoader()}
+              >
                 Login
               </Link>
             </div>
