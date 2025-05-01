@@ -1,5 +1,4 @@
 import { getCompletion } from "@/ai/openAiServices";
-import { generateText } from "@/ai/palm2Services";
 import { runChat } from "@/ai/geminiAiServices";
 const generatePrompt = (userData: any) => {
   return `

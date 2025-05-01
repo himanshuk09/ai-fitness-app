@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "../../components/Header";
 import { ExerciseIntro } from "../../components/Intro";
 
@@ -14,6 +14,7 @@ import { BiSolidSend } from "react-icons/bi";
 import { useRouter } from "next/navigation"; // Import useRout
 
 import { useUser } from "../../context/UserContext";
+import { account } from "@/app/api/appwriter";
 const API_KEY: any = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 export default function Home() {
   const { user, setUser, logout, loading, showLoader, hideLoader } = useUser();
@@ -23,44 +24,74 @@ export default function Home() {
   const [textInput, setTextInput] = useState("");
   const [output, setOutput] = useState("");
   const router = useRouter(); // Initialize useRouter
-  const imageAnalysisPrompt1 = `
-  Analyze the uploaded image and determine the fitness level, body type, or health-related characteristics of the person. Based on the additional input provided: "${textInput}", generate a comprehensive response that includes:
+  const outputEndRef = useRef<any>(null);
 
-  1. A personalized diet plan tailored to their fitness level and goals.
-  2. Key nutrition tips to enhance health and performance.
-  3. Recommended workout routines suitable for their body type or goals.
-  4. Motivational strategies to help them stay consistent and inspired.
-  5. General health tips, such as hydration, sleep, and stress management.
-  6. Any additional recommendations or guidance relevant to the image analysis and input.
-  `;
   const imageAnalysisPrompt = `
-  Analyze the uploaded image and determine the fitness level, body composition, and health-related characteristics of the person. Based on this analysis and the additional input: "${textInput}", generate a structured response in Markdown format.
-  
-  ### Your Personalized Fitness Plan
-  
-  #### **Fitness Level**
-  - Describe the person's fitness level based on the image.
-  
-  #### **7-Day Diet Plan**
-  - **Breakfast:** [Day-wise meal recommendations]
-  - **Lunch:** [Day-wise meal recommendations]
-  - **Dinner:** [Day-wise meal recommendations]
-  - **Snacks & Drinks:** Healthy options
-  
-  #### **Workout Routine**
-  - Recommended daily exercises, including strength, cardio, and flexibility training.
-  
-  #### **Nutritional Advice**
-  - Macronutrient balance (proteins, fats, carbs)
-  - Important vitamins and minerals
-  
-  #### **Motivational Tips**
-  - Strategies to stay consistent and inspired.
-  
-  #### **Health Recommendations**
-  - Hydration, sleep, and stress management.
-  
-  **Ensure this response is formatted in Markdown.**
+Analyze the uploaded image and the additional input: "${textInput}" to assess the person's fitness level, body composition, and health characteristics. Generate a detailed, structured, and visually appealing response in Markdown format with tables, borders, and emojis.
+
+---
+
+### **Your Personalized Fitness Plan** 🌟
+
+#### **1. Fitness Level Assessment** 🏋️‍♂️  
+- Describe the person's current fitness level (beginner, intermediate, advanced) based on visual cues (muscle tone, posture, body fat, etc.).  
+- Highlight strengths and areas for improvement.  
+
+---
+
+#### **2. 7-Day Diet Plan** 🍎  
+Present a balanced meal plan in a table with borders. Include portion sizes and hydration tips.  
+
+**Daily Meal Structure:**  
+
+| Day       | Breakfast 🥞               | Lunch 🥗                  | Dinner 🍲               | Snacks & Drinks 🍏       |  
+|-----------|---------------------------|--------------------------|-------------------------|--------------------------|  
+| **Day 1** | Oatmeal + Berries + Nuts  | Grilled Chicken + Quinoa | Baked Salmon + Veggies  | Greek Yogurt + Almonds   |  
+| **Day 2** | Smoothie + Spinach + Protein | Turkey Wrap + Salad  | Stir-Fry Tofu + Rice    | Hummus + Carrot Sticks   |  
+| ...       | ...                       | ...                      | ...                     | ...                      |  
+
+**Hydration Tip:** 💧 Drink 3-4L water daily. Herbal teas and infused water encouraged!  
+
+---
+
+#### **3. Workout Routine** 💪🔥  
+A weekly plan with exercises, duration, and intensity in a bordered table.  
+
+| Day       | Strength 🏋️‍♀️          | Cardio 🏃‍♂️            | Flexibility 🧘‍♀️       | Notes 📝                |  
+|-----------|-----------------------|-----------------------|------------------------|-------------------------|  
+| **Day 1** | Squats, Push-ups (3x12) | 30-min Run           | 15-min Yoga            | Focus on form!          |  
+| **Day 2** | Deadlifts, Rows (3x10) | Cycling (45 min)      | Dynamic Stretching     | Stay hydrated.          |  
+| ...       | ...                   | ...                   | ...                    | ...                     |  
+
+---
+
+#### **4. Nutritional Advice** 🥑🍗  
+- **Macronutrients:**  
+  - Protein: 30% (Lean meats, legumes)  
+  - Carbs: 40% (Whole grains, veggies)  
+  - Fats: 30% (Avocados, nuts, olive oil)  
+- **Key Micronutrients:** Iron (spinach), Vitamin D (sunlight), Omega-3 (fish).  
+
+---
+
+#### **5. Motivational Tips** ✨🚀  
+- **"Progress > Perfection!"** – Track small wins weekly.  
+- **Find a Buddy** 👫 – Accountability boosts consistency.  
+- **Reward System** 🎁 – Treat yourself for milestones (e.g., new workout gear).  
+
+---
+
+#### **6. Health Recommendations** 🌿💤  
+- **Sleep:** 7-9 hours/night ⏰.  
+- **Stress Management:** Meditation/Deep breathing (10 min/day).  
+- **Avoid:** Processed sugars and late-night caffeine.  
+
+**Formatting Requirements:**  
+- Use Markdown syntax throughout  
+- Maintain consistent table borders (\`|---|\`)  
+- Include at least 2 relevant emojis per section  
+- Bold important terms (e.g., **Macronutrients**)  
+- Use section dividers (\`---\`) between categories  
   `;
 
   const handleImageUpload = async (event: any) => {
@@ -136,24 +167,44 @@ export default function Home() {
       hideLoader();
     }
   };
+
+  // Fetch user data
+  const fetchUser = async () => {
+    try {
+      const userData = await account.get();
+      setUser(userData);
+    } catch (error: any) {
+      router.push("/");
+      console.log("User not authenticated:", error.message);
+      setUser(null);
+    } finally {
+    }
+  };
+
   useEffect(() => {
     setTimeout(() => {
       hideLoader();
     }, 1000);
+    fetchUser();
   }, []);
+  useEffect(() => {
+    if (outputEndRef.current) {
+      outputEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [output]);
   return (
     <main className="flex flex-col min-h-screen bg-black">
       <div
         className={"w-full flex-grow"}
         style={{
-          backgroundImage: "url('/images/diet.avif')",
+          backgroundImage: "url('/images/new-1.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
         <Header />
         <div className={"mt-24 px-4 my-6"}>
-          <div className={"max-w-5xl p-4 mx-auto bg-black/60"}>
+          <div className={"max-w-5xl p-4 mx-auto bg-black/80"}>
             <ExerciseIntro name={user?.name} />
             <div className={"w-full"}>
               <div className="flex-1 flex-row items-end justify-end">
@@ -171,8 +222,8 @@ export default function Home() {
               <hr className={"my-5"} />
               <div className="p-4">
                 {/* Image Upload */}
-                <div className="mb-4">
-                  <label className="cursor-pointer p-2 bg-gradient-to-r text-white   font-bold text-lg  hover:bg-white/80 hover:text-black/80 rounded-md  bg-black/50">
+                <div className="mb-4 ">
+                  <label className="cursor-pointer p-2 bg-gradient-to-r text-white   font-bold text-lg  hover:bg-white/80 hover:text-black/80 rounded-md  bg-black/50 border border-input">
                     Upload Image
                     <input
                       type="file"
@@ -205,8 +256,9 @@ export default function Home() {
                     id="textInput"
                     rows={4}
                     value={textInput}
+                    placeholder="Ask me anything..."
                     onChange={(e: any) => setTextInput(e.target.value)}
-                    className="w-full border  px-2 py-1  rounded-md p-1 ring-1 ring-inset ring-primary-light"
+                    className="w-full border  px-2 py-1  rounded-md p-1 ring-1 ring-inset ring-primary-light placeholder:text-gray-200"
                   ></textarea>
                 </div>
 
@@ -217,7 +269,7 @@ export default function Home() {
                     type="submit"
                     onClick={handleGenerate}
                     disabled={loading}
-                    className="rounded-md cursor-pointer bg-black/60 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/90 disabled:bg-black/15  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="rounded-md cursor-pointer border  bg-black/60 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black disabled:bg-black/15  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     {loading ? (
                       "Generating..."
@@ -225,7 +277,7 @@ export default function Home() {
                       <div
                         className={"flex justify-center  items-center gap-2"}
                       >
-                        Generate <BiSolidSend />
+                        Image Recogniser <BiSolidSend />
                       </div>
                     )}
                   </button>
@@ -237,13 +289,17 @@ export default function Home() {
       </div>
       <div className={`${output ? "mt-16 px-14 my-6" : ""}`}>
         {output && (
-          <div className="mt-4">
+          <div className="mt-4 output" id="output">
             <h2 className="text-2xl font-bold mb-4 text-white">
               Your Personalized Fitness Plan:
             </h2>
 
-            <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white space-y-4">
+            <div
+              className="bg-gray-800 p-6 rounded-lg shadow-lg text-white space-y-4"
+              style={{ maxHeight: "70vh", overflowY: "auto" }}
+            >
               <div dangerouslySetInnerHTML={{ __html: output }}></div>
+              <div ref={outputEndRef} />
             </div>
           </div>
         )}

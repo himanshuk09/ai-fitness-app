@@ -1,16 +1,22 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import WeeklyPlan from "@/components/WeeklyPlan";
 import { BiSolidDownload } from "react-icons/bi";
-import dynamic from "next/dynamic";
-// Dynamically import browser-only libraries
-const html2canvas = dynamic(() => import("html2canvas-pro"), { ssr: false });
 
-const jsPDF = dynamic(() => import("jspdf"), { ssr: false });
-const TableToPDF = ({ data }) => {
+const TableToPDF = ({ data, file_name }) => {
   const pdfContainerRef = useRef(null);
 
-  const generatePDFfromUI = async (elementId, filename = "document.pdf") => {
+  // Auto-scroll to the PDF section when data is loaded
+  useEffect(() => {
+    if (data.length > 0 && pdfContainerRef.current) {
+      pdfContainerRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [data]);
+
+  const generatePDFfromUI = async (
+    elementId,
+    filename = `${file_name}_exercise_plan.pdf`
+  ) => {
     const element = document.getElementById(elementId);
     if (!element) {
       console.error("Element not found");
@@ -18,7 +24,12 @@ const TableToPDF = ({ data }) => {
     }
 
     try {
-      const canvas = await html2canvas(element, { useCORS: true });
+      const html2canvasModule = await import("html2canvas-pro");
+      const { jsPDF } = await import("jspdf");
+
+      const canvas = await html2canvasModule.default(element, {
+        useCORS: true,
+      });
       const imgData = canvas.toDataURL("image/png");
 
       const pdf = new jsPDF({
@@ -26,46 +37,42 @@ const TableToPDF = ({ data }) => {
         unit: "mm",
         format: "a4",
       });
+      const fullWidth = 210; // A4 width in mm
+      const scaledHeight = (canvas.height * (210 - 110)) / canvas.width; // Use width from earlier margin logic (210 - 55*2)
 
-      const imgWidth = 210; // A4 width in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
-      let y = 0;
-      pdf.addImage(imgData, "PNG", 0, y * -5, imgWidth, imgHeight);
+      pdf.addImage(imgData, "PNG", 0, 0, fullWidth, scaledHeight);
       pdf.save(filename);
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
   };
+
   return (
-    <div className={"p-4 border border-gray-100 rounded-xl shadow-md"}>
+    <div className="p-4 border border-gray-100 rounded-xl shadow-md">
       {data.length > 0 ? (
         <>
-          <div className={"text-right"}>
+          <div className="text-right">
             <button
-              onClick={() => {
-                console.log("pdf called");
-                generatePDFfromUI("content");
-              }}
+              onClick={() => generatePDFfromUI("content")}
               type="button"
-              className="rounded-md cursor-pointer bg-secondary-main px-3 py-2 text-sm font-semibold text-white shadow-sm hover:text-black hover:bg-white disabled:bg-secondary-light  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 outline-1 outline-white"
-
-              // className="rounded-md bg-secondary-main px-3 py-2 text-sm font-semibold text-white shadow-sm hover:text-black hover:bg-white disabled:bg-secondary-light  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="rounded-md cursor-pointer bg-secondary-main px-3 py-2 text-sm font-semibold text-white shadow-sm hover:text-black hover:bg-white disabled:bg-secondary-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 outline-1 outline-white"
             >
-              <div className={"flex justify-center items-center gap-2"}>
+              <div className="flex justify-center items-center gap-2">
                 Download <BiSolidDownload />
               </div>
             </button>
           </div>
+
           <div className="mt-6 flex items-center justify-end gap-x-6">
             <div id="content" ref={pdfContainerRef}>
-              <h1 className={"text-3xl text-center mb-5 text-white font-bold"}>
+              <h1 className="text-3xl text-center mb-5 text-white font-bold">
                 Your Weekly Exercise
               </h1>
               <WeeklyPlan data={data} />
             </div>
           </div>
         </>
-      ) : undefined}
+      ) : null}
     </div>
   );
 };

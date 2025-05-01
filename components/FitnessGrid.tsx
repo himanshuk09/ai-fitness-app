@@ -14,7 +14,7 @@ export function FitnessGrid({ section }: any) {
               alt={item.name}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover grayscale transition-all duration-300 transform scale-100 group-hover:scale-110 group-hover:grayscale-0"
+              className="object-cover grayscale-0 transition-all duration-300 transform scale-100 group-hover:scale-110 group-hover:grayscale-0"
             />
           </div>
 

@@ -17,8 +17,6 @@ export default function UserForm({ setData }: any) {
   const [goal, setGoal] = useState("muscle-gain");
   const handleSubmit = async (event: any) => {
     event.preventDefault(); // Prevent form submission and page reload
-    showLoader();
-    console.log("handleSubmit");
 
     // Create an object with the form values
     const formData = {
@@ -29,7 +27,17 @@ export default function UserForm({ setData }: any) {
       fitnessLevel,
       goal,
     };
+    // Validate: check if any field is missing or falsy
+    const missingFields = Object.entries(formData)
+      .filter(([key, value]) => !value)
+      .map(([key]) => key);
 
+    if (missingFields.length > 0) {
+      toast.error(`Please fill out: ${missingFields.join(", ")}`);
+      return;
+    }
+
+    showLoader();
     let response = await geminiApiGenerateMsg(formData);
 
     if (response) {
@@ -67,6 +75,7 @@ export default function UserForm({ setData }: any) {
             label={"Height (cm)"}
             id={"height"}
             value={height}
+            placeholder={"Height"}
             onChange={(e: any) => setHeight(e.target.value)}
           />
         </div>
@@ -75,6 +84,7 @@ export default function UserForm({ setData }: any) {
             label={"Weight (kg)"}
             id={"weight"}
             value={weight}
+            placeholder={"Weight"}
             onChange={(e: any) => setWeight(e.target.value)}
           />
         </div>
@@ -83,6 +93,7 @@ export default function UserForm({ setData }: any) {
             label={"Age (yr)"}
             id={"age"}
             value={age}
+            placeholder={"Age"}
             onChange={(e: any) => setAge(e.target.value)}
           />
         </div>
@@ -123,13 +134,13 @@ export default function UserForm({ setData }: any) {
           type="submit"
           onClick={handleSubmit}
           disabled={loading}
-          className="rounded-md cursor-pointer bg-black/60 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/90 disabled:bg-black/15  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="rounded-md cursor-pointer border border-input  bg-black/60 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/90 disabled:bg-black/15  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           {loading ? (
             "Please wait..."
           ) : (
             <div className={"flex justify-center items-center gap-2"}>
-              Submit <BiSolidSend />
+              Generate Manual <BiSolidSend />
             </div>
           )}
         </button>

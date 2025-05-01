@@ -6,19 +6,21 @@ import Image from "next/image";
 import { useUser } from "@/context/UserContext";
 import { FitnessGrid } from "@/components/FitnessGrid";
 import { SECTIONS } from "@/constants";
+import { useRouter } from "next/navigation";
 
 const HomeScreen = () => {
   const { user, setUser, loading, logout } = useUser();
-
+  const router = useRouter();
   // Initialize useRouter
 
-  // // Fetch user data
+  // Fetch user data
   const fetchUser = async () => {
     try {
       const userData = await account.get();
       setUser(userData);
     } catch (error: any) {
-      console.error("User not authenticated:", error.message);
+      router.push("/");
+      console.log("User not authenticated:", error.message);
       setUser(null);
     } finally {
     }
@@ -27,7 +29,7 @@ const HomeScreen = () => {
   useEffect(() => {
     fetchUser();
   }, []);
-  console.log("user", user);
+
   return (
     <div className="min-h-screen bg-black text-white px-6 pb-12">
       <Header />

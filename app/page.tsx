@@ -2,9 +2,29 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/context/UserContext";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { account } from "./api/appwriter";
 
 export default function Home() {
   const { user, setUser, logout, loading, showLoader, hideLoader } = useUser();
+  const router = useRouter();
+  const fetchUser = async () => {
+    try {
+      const userData = await account.get();
+      router.push("/home");
+      setUser(userData);
+    } catch (error: any) {
+      console.log("please login");
+      setUser(null);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   return (
     <div
       className="flex min-h-screen flex-col items-center justify-center p-4 text-center"
