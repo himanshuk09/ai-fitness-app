@@ -68,7 +68,7 @@ export default function RegisterPage() {
     >
       <div className="absolute inset-0 bg-black/50" />
 
-      <Card className="w-full max-w-md z-10 bg-black/65">
+      <Card className="w-full max-w-md z-10 bg-black/65 backdrop-blur-sm">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold ">
             Create an account

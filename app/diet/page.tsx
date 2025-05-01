@@ -203,8 +203,8 @@ A weekly plan with exercises, duration, and intensity in a bordered table.
         }}
       >
         <Header />
-        <div className={"mt-24 px-4 my-6"}>
-          <div className={"max-w-5xl p-4 mx-auto bg-black/80"}>
+        <div className={"mt-28 px-4 my-6"}>
+          <div className={"max-w-5xl p-4 mx-auto rounded-lg bg-black/80 backdrop-blur-sm"}>
             <ExerciseIntro name={user?.name} />
             <div className={"w-full"}>
               <div className="flex-1 flex-row items-end justify-end">

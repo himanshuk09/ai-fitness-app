@@ -52,7 +52,7 @@ export default function Home() {
       >
         <Header />
         <div className={"mt-24 px-4 my-6"}>
-          <div className={"max-w-5xl p-4 mx-auto bg-black/80"}>
+          <div className={"max-w-5xl rounded-lg p-4 mx-auto bg-black/80 backdrop-blur-sm"}>
             <DietIntro name={user?.name} />
             <div className={"w-full"}>
               <UserForm setData={setData} />
