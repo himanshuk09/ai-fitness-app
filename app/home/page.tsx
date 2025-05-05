@@ -27,7 +27,9 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    fetchUser();
+    setTimeout(() => {
+      fetchUser();
+    }, 500);
   }, []);
 
   return (

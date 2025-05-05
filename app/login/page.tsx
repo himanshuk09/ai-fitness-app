@@ -1,5 +1,5 @@
 "use client";
-
+import { Eye, EyeOff } from "lucide-react";
 import { CardFooter } from "@/components/ui/card";
 import type React from "react";
 import { useEffect, useState } from "react";
@@ -21,6 +21,7 @@ import { useUser } from "../../context/UserContext";
 export default function LoginPage() {
   const [email, setEmail] = useState<any>("");
   const [password, setPassword] = useState<any>("");
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter(); // Initialize useRouter
   const { user, setUser, loading, showLoader, hideLoader } = useUser();
   const handleSubmit = async (e: React.FormEvent) => {
@@ -80,21 +81,25 @@ export default function LoginPage() {
                 <Label htmlFor="password" className="text-white font-bold">
                   Password
                 </Label>
-                {/* <Link
-                  href="/forgot-password"
-                  className="text-sm text-primary hover:underline text-white"
-                >
-                  Forgot password?
-                </Link> */}
               </div>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">

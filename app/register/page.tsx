@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-
+import { Eye, EyeOff } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,8 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 export default function RegisterPage() {
   const { user, setUser, loading, showLoader, hideLoader } = useUser();
+
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     age: "",
@@ -128,18 +130,31 @@ export default function RegisterPage() {
                 required
               />
             </div>
+
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-white font-bold">
-                Password
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Create a password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password" className="text-white font-bold">
+                  Password
+                </Label>
+              </div>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
