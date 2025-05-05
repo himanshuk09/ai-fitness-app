@@ -44,9 +44,9 @@ export default function RegisterPage() {
     try {
       showLoader();
       const response = await account.create(ID.unique(), email, password, name);
-      toast.success("Account created successfully.");
+      toast.success("Account created successfully. Please Login");
       console.log(response);
-      router.push("/home");
+      router.push("/login");
     } catch (error: any) {
       toast.error("Account wasn't created successfully");
       console.log(error.message);

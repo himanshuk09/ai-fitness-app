@@ -14,6 +14,7 @@ export default function Home() {
       const userData = await account.get();
       router.push("/home");
       setUser(userData);
+      console.log("Already login");
     } catch (error: any) {
       console.log("please login");
       setUser(null);

@@ -19,9 +19,9 @@ const HomeScreen = () => {
       const userData = await account.get();
       setUser(userData);
     } catch (error: any) {
-      router.push("/");
       console.log("User not authenticated:", error.message);
       setUser(null);
+      router.push("/");
     } finally {
     }
   };
@@ -29,7 +29,7 @@ const HomeScreen = () => {
   useEffect(() => {
     setTimeout(() => {
       fetchUser();
-    }, 500);
+    }, 2000);
   }, []);
 
   return (
